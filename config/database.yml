@@ -21,13 +21,13 @@ default: &default
 
 development:
   <<: *default
-  database: rails_dc_pg_example_development
+  database: hares_comm_development
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: rails_dc_pg_example
+  #username: hares_comm
 
   # The password associated with the PostgreSQL role (username).
   #password:
@@ -55,7 +55,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: rails_dc_pg_example_test
+  database: hares_comm_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,6 +79,6 @@ test:
 #
 production:
   <<: *default
-  database: rails_dc_pg_example_production
-  username: rails_dc_pg_example
-  password: <%= ENV["RAILS_DC_PG_EXAMPLE_DATABASE_PASSWORD"] %>
+  database: hares_comm_production
+  username: hares_comm
+  password: <%= ENV["HARES_COMM_DATABASE_PASSWORD"] %>

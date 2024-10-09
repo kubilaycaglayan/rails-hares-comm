@@ -15,7 +15,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: rails_dc_pg_example_development
+      POSTGRES_DB: hares_comm_development
       POSTGRES_HOST: localhost
     volumes:
       - postgres_data:/var/lib/postgresql/data
