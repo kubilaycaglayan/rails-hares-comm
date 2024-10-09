@@ -45,3 +45,4 @@ group :development do
   # gem "spring"
 end
 
+gem 'bunny', '~> 2.23'
