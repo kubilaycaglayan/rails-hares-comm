@@ -1,13 +1,18 @@
 require 'bunny'
 
-class RMQActor
+class Rabactor
+  include Singleton
+
   def initialize
-    puts "RMQActor initialized"
-    puts "🟢🟢🟢🟢🟢🟢🟢🟢🟢"
-    @connection = Bunny.new
+    @connection = Bunny.new(
+      vhost: 'vhost',
+      user: 'rabbitmq',
+      password: 'password'
+    )
     @connection.start
-    @channel = @connection.create_channel
+    @channel = @connection.create_channel()
     # @exchange = @channel.default_exchange
+    Rails.logger.info '🟢 Rabactor initialized'
   end
 
 =begin
