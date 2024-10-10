@@ -5,6 +5,6 @@ class Customer < ApplicationRecord
   end
 
   def create_queue
-    Rabactor.instance.set_up_queue_for_headers(self)
+    AMQPService.set_up_queue_for_headers(self)
   end
 end

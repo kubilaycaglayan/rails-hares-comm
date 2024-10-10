@@ -1,6 +1,6 @@
 require 'bunny'
 
-class Rabactor
+class AmqpService
   include Singleton
   attr_reader :connection, :channel, :exchange
 
