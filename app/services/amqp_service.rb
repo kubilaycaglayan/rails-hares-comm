@@ -13,6 +13,7 @@ class AmqpService
   PEOPLE_SERVICE = 'people-service'
   ORDER_SERVICE = 'order-service'
   LOGS_SERVICE = 'logs-service'
+  NOTIFICATION_SERVICE = 'notification-service'
 
   ORDER_CREATED = 'order.created'
   ORDER_SHIPPED = 'order.shipped'
@@ -51,6 +52,7 @@ class AmqpService
       @hares_headers_exchange = @channel.headers('hares.headers', durable: true)
       @hares_direct_exchange = @channel.direct('hares.direct', durable: true)
       @hares_topic_exchange = @channel.topic('hares.topic', durable: true)
+      @hares_fanout_exchange = @channel.fanout('hares.fanout', durable: true)
 
       set_up_dead_letter_x_and_q
       set_up_queues_and_bind_for_customers
@@ -105,6 +107,16 @@ class AmqpService
     set_up_binding(queue, customer)
   end
 
+  def set_up_queue_for_fanout(customer)
+    queue = @channel.queue(
+      "user-message-#{customer.id}-#{customer.name}",
+      durable: true,
+      arguments: default_queue_arguments
+    )
+    queue.bind(@hares_fanout_exchange)
+    set_up_consumer_for_messages_fanout(queue, customer)
+  end
+
 private
   def default_queue_arguments
     {
@@ -121,6 +133,7 @@ private
     customers = Customer.all
     customers.each do |customer|
       set_up_queue_for_headers(customer)
+      set_up_queue_for_fanout(customer)
     end
   end
 
@@ -132,6 +145,19 @@ private
           payload,
           "#{customer.country}-#{customer.membership}",
           headers_queue_name(customer)
+        )
+      @channel.ack(delivery_info.delivery_tag)
+    end
+  end
+
+  def set_up_consumer_for_messages_fanout(queue, customer)
+    queue.subscribe(:manual_ack => true) do |delivery_info, properties, payload|
+      MicroservicesDigest
+        .digest_message(
+          NOTIFICATION_SERVICE,
+          payload,
+          "#{customer.country}-#{customer.membership}",
+          "user-message-#{customer.id}-#{customer.name}"
         )
       @channel.ack(delivery_info.delivery_tag)
     end
