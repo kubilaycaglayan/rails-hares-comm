@@ -3,6 +3,10 @@
 - 'x-dead-letter-exchange', 'x-message-ttl' are defined on the queues NOT on bindings or exchanges or channels.
 - 'x-match'(along with the optional headers) for headers exchange is defined on the bindings NOT on the exchanges or queues or channels.
 
+- https://www.rabbitmq.com/docs/
+- http://rubybunny.info/
+- http://reference.rubybunny.info/
+
 ### Scenario:
 You’re developing an e-commerce system, and you want to implement a notification system for different events like order updates, shipping, and promotions. You also want to ensure that any messages that can't be processed are routed to a dead-letter queue for further investigation.
 
