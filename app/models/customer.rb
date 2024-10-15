@@ -5,7 +5,8 @@ class Customer < ApplicationRecord
   validates :name, presence: true
 
   def create_queue
-    AMQPService.set_up_queue_for_headers(self)
-    AMQPService.publish_customer_created_event(self)
+    MSEmulator.set_up_queue_for_headers(self)
+    MSEmulator.set_up_queue_for_fanout(self)
+    MSEmulator.publish_customer_created_event(self)
   end
 end
